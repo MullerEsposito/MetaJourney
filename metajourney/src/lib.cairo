@@ -7,16 +7,16 @@ use meta_journey_game::Achievement;
 trait PlayerTrait<T> {
     fn create_new_player(ref self: T, player_address: ContractAddress);
     fn get_player(self: @T, player_address: ContractAddress) -> Player;
-    fn get_player_achievements(self: @T, player_address: ContractAddress) -> starknet::LegacyMap::<u32::Achievement>;
+    fn get_player_achievements(self: @T, player_address: ContractAddress) -> LegacyMap::<u32::Achievement>;
     fn set_player_achievement(ref self: T, player_address: ContractAddress, achievement: Achievement);
     fn check_player_achievement(self: @T, player_address: ContractAddress, achievement_id: u32) -> bool;
 }
 
-#[starknet::interface]
-trait AchievementTrait<T> {
-    fn get_achievement(self: @T, achievement_id: u32) -> Achievement;
-    fn set_achievement(ref self: T, achievement_id: u32, description: felt252, xp_quantity: u8);
-}
+// #[starknet::interface]
+// trait AchievementTrait<T> {
+//     fn get_achievement(self: @T, achievement_id: u32) -> Achievement;
+//     fn set_achievement(ref self: T, achievement_id: u32, description: felt252, xp_quantity: u8);
+// }
 
 #[starknet::contract]
 pub mod meta_journey_game {
@@ -74,15 +74,15 @@ pub mod meta_journey_game {
         }
     }
 
-    #[abi(embed_v0)]
-    impl AchievementImpl of super::AchievementTrait<ContractState> {
-        fn get_achievement(self: @T, achievement_id: u32) -> Achievement {
-            self.achievements.read(achievement_id)
-        }
+    // #[abi(embed_v0)]
+    // impl AchievementImpl of super::AchievementTrait<ContractState> {
+    //     fn get_achievement(self: @T, achievement_id: u32) -> Achievement {
+    //         self.achievements.read(achievement_id)
+    //     }
 
-        fn set_achievement(ref self: T, achievement_id: u32, description: felt252, xp_quantity: u8) {
-            let _achievement: Achievement = Achievement { id: achievement_id, description: description, xp_quantity: xp_quantity };
-            self.achievements.write(achievement_id, _achievement);
-        }
-    }
+    //     fn set_achievement(ref self: T, achievement_id: u32, description: felt252, xp_quantity: u8) {
+    //         let _achievement: Achievement = Achievement { id: achievement_id, description: description, xp_quantity: xp_quantity };
+    //         self.achievements.write(achievement_id, _achievement);
+    //     }
+    // }
 }
