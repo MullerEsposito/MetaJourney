@@ -2,6 +2,7 @@ use starknet::ContractAddress;
 use meta_journey_game::Player;
 use meta_journey_game::Achievement;
 use core::dict::Felt252DictEntryTrait;
+use alexandria_storage::list::{List, ListTrait};
 
 
 
@@ -22,15 +23,18 @@ trait AchievementTrait<T> {
 
 #[starknet::contract]
 pub mod meta_journey_game {
-    use starknet::ContractAddress;
+    use core::result::ResultTrait;
+use starknet::ContractAddress;
+    use alexandria_storage::list::{List, ListTrait};
+
 
     #[storage]
     struct Storage {
         players: LegacyMap::<ContractAddress, Player>,
         achievement_per_player: LegacyMap::<ContractAddress, u32>,
-        achievements: Array<Achievement>,
+        achievements: List<Achievement>,
         achievements_map: LegacyMap::<u32, Achievement>,
-        achievements_per_player: LegacyMap::<ContractAddress, Array<Achievement>>,
+        achievements_per_player: LegacyMap::<ContractAddress, List<Achievement>>,
     }
 
     #[constructor]
@@ -38,13 +42,13 @@ pub mod meta_journey_game {
         
     }
 
-    #[derive(Drop, Serde)]
+    #[derive(Drop, Serde, starknet::Store)]
     pub struct Player {
         player_address: ContractAddress,
         player_name: felt252
     }
 
-    #[derive(Drop, Serde)]
+    #[derive(Drop, Serde, Copy, starknet::Store)]
     pub struct Achievement {
         id: u32,
         description: felt252,
@@ -63,7 +67,7 @@ pub mod meta_journey_game {
         }
 
         fn get_player_achievements(self: @ContractState, player_address: ContractAddress) -> Array<Achievement> {
-            self.achievements_per_player.read(player_address)
+            self.achievements_per_player.read(player_address).array().unwrap()
         }
 
         fn set_player_achievement(ref self: ContractState, player_address: ContractAddress, achievement: Achievement) {
@@ -85,7 +89,11 @@ pub mod meta_journey_game {
         fn set_achievement(ref self: ContractState, achievement_id: u32, description: felt252, xp_quantity: u8) {
             let _achievement: Achievement = Achievement { id: achievement_id, description: description, xp_quantity: xp_quantity };
             self.achievements_map.write(achievement_id, _achievement);
-            self.achievements.append(_achievement);
+
+            let mut achievements = self.achievements.read();
+            achievements.append(_achievement);
+            
+            self.achievements.write(achievements);
         }
 
         fn get_achievement(self: @ContractState, achievement_id: u32) -> Achievement {
