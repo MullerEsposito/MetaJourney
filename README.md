@@ -44,8 +44,10 @@ MetaJourney offers bite-sized resources and gamified challenges to simplify onbo
 - ReactJS
 
 
-
   #### links:
-  - [metaJourney](https://metajourney.joinchain.org)
+  - [MetaJourney Website](https://metajourney.joinchain.org)
   - [Explore our work-in-progress here.](https://excalidraw.com/#json=7tpxj1hMy3-kybX7Chh4V,miwlKPb0_jnbrSvDsd3-TA)
   - @metajourneyio
+
+
+  #### Project created during the Starknet Hacker House in Brazil
