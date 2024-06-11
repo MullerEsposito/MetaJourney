@@ -1,0 +1,18 @@
+[package]
+name = "metajourney"
+version = "0.1.0"
+edition = "2023_11"
+
+# See more keys and their definitions at https://docs.swmansion.com/scarb/docs/reference/manifest.html
+
+[dependencies]
+starknet = ">=2.5.4"
+alexandria_storage = { git = "https://github.com/keep-starknet-strange/alexandria.git", rev = "98aadc7e3f12dbb026e853604fe2cc061451cc8a" }
+
+[[target.starknet-contract]]
+
+#Enable sierra
+sierra = true
+
+#Enable casm
+casm = true

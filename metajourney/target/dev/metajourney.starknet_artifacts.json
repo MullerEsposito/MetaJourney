@@ -1,0 +1,1 @@
+{"version":1,"contracts":[{"id":"ns1ksq1rmdvq2","package_name":"metajourney","contract_name":"meta_journey_game","module_path":"metajourney::meta_journey_game","artifacts":{"sierra":"metajourney_meta_journey_game.contract_class.json","casm":"metajourney_meta_journey_game.compiled_contract_class.json"}}]}
